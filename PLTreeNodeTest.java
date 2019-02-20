@@ -118,6 +118,14 @@ public class PLTreeNodeTest
 	}
 
 	@Test
+	public void testToString()
+	{
+		NodeType[] typeList0 = { NodeType.A, NodeType.B, NodeType.IMPLIES };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList0);
+		assertEquals("toString should use toStringPrefix: ", "implies(A,B)", pltree.toString());
+	}
+
+	@Test
 	public void testEliminateImplies()
 	{
 		NodeType[] typeList0 = { NodeType.A, NodeType.B, NodeType.IMPLIES };
