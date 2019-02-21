@@ -122,7 +122,7 @@ public class PLTreeNodeTest
 	{
 		NodeType[] typeList0 = { NodeType.A, NodeType.B, NodeType.IMPLIES };
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList0);
-		assertEquals("toString should use toStringPrefix: ", "implies(A,B)", pltree.toString());
+		assertEquals("toString should use toStringPrefix (according to the interface): ", "implies(A,B)", pltree.toString());
 	}
 
 	@Test
@@ -427,7 +427,28 @@ public class PLTreeNodeTest
 		assertEquals("Constructed: " ,"((X∧Y)∧Z)",pltree2.toStringInfix());
 		pltree2.makeAndOrRightDeep();
 		assertEquals("Made : " ,"(X∧(Y∧Z))",pltree2.toStringInfix());
-		
+
+		// (W∨X)∨(Y∨Z) into W∨(X∨(Y∨Z))
+		// ((W∨X)∨Y)∨Z into W∨(X∨(Y∨Z))
+		NodeType[] typeList3 = new NodeType[] { NodeType.W, NodeType.X, NodeType.OR, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR};
+		NodeType[] typeList4 = new NodeType[] { NodeType.W, NodeType.X, NodeType.OR, NodeType.Y, NodeType.OR, NodeType.Z, NodeType.OR };
+		pltree2 = PLTreeNode.reversePolishBuilder(typeList3);
+		assertEquals("Constructed: " ,"((W∨X)∨(Y∨Z))",pltree2.toStringInfix());
+		pltree2.makeAndOrRightDeep();
+		assertEquals("Made1 : " ,"(W∨(X∨(Y∨Z)))",pltree2.toStringInfix());
+
+		pltree2 = PLTreeNode.reversePolishBuilder(typeList4);
+		assertEquals("Constructed: " ,"(((W∨X)∨Y)∨Z)",pltree2.toStringInfix());
+		pltree2.makeAndOrRightDeep();
+		assertEquals("Made2 : " ,"(W∨(X∨(Y∨Z)))",pltree2.toStringInfix());
+	}
+
+	@Test
+	public void testNodeReferences() {
+		NodeType[] typeList1 = new NodeType[] { NodeType.A, NodeType.B, NodeType.IMPLIES, NodeType.C, NodeType.D, NodeType.AND, NodeType.OR };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList1);
+		pltree.pushOrBelowAnd();
+
 	}
 	
 
