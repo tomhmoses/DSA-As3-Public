@@ -224,15 +224,60 @@ public class PLTreeNodeTest
 	{
 		NodeType[] typeList = { NodeType.FALSE, NodeType.A, NodeType.AND };
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
-		assertEquals("NOT over OR start", "(⊥∧A)", pltree.toStringInfix());
+		assertEquals("simple1 start", "(⊥∧A)", pltree.toStringInfix());
 		pltree.evaluateConstantSubtrees();
-		assertEquals("NOT over OR", "⊥", pltree.toStringInfix());
+		assertEquals("simple1 end", "⊥", pltree.toStringInfix());
+
+		NodeType[] typeList1 = { NodeType.A, NodeType.TRUE, NodeType.AND};
+		PLTreeNodeInterface pltree1 = PLTreeNode.reversePolishBuilder(typeList1);
+		assertEquals("simple1 start", "(A∧⊤)", pltree1.toStringInfix());
+		pltree1.evaluateConstantSubtrees();
+		assertEquals("simple1 end", "A", pltree1.toStringInfix());
+
+		NodeType[] typeList2 = { NodeType.FALSE, NodeType.A, NodeType.B, NodeType.OR, NodeType.AND };
+		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
+		assertEquals("simple2 start", "(⊥∧(A∨B))", pltree2.toStringInfix());
+		pltree2.evaluateConstantSubtrees();
+		assertEquals("simple2 end", "⊥", pltree2.toStringInfix());
+	}
+
+	@Test
+	public void testEvaluateConstantSubtreesNullChildren()
+	{
+		// if you can help me write a test for this that would be great
+		
+		/*
+		NodeType[] typeList = { NodeType.FALSE, NodeType.A, NodeType.AND };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
+		assertEquals("NOT over OR start", "(⊥∧A)", pltree.toStringInfix());
+		if (pltree.)
+			assertEquals("NOT over OR", "⊥", pltree.toStringInfix());
 
 		NodeType[] typeList2 = { NodeType.FALSE, NodeType.A, NodeType.B, NodeType.OR, NodeType.AND };
 		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
 		assertEquals("NOT over OR start", "(⊥∧(A∨B))", pltree2.toStringInfix());
 		pltree2.evaluateConstantSubtrees();
 		assertEquals("NOT over OR", "⊥", pltree2.toStringInfix());
+		*/
+	}
+
+	@Test
+	public void testEvaluateConstantSubtreesReturns()
+	{
+		NodeType[] typeList = { NodeType.FALSE, NodeType.A, NodeType.AND };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
+		assertEquals("return1 start", "(⊥∧A)", pltree.toStringInfix());
+		assertEquals("returns1", false, pltree.evaluateConstantSubtrees());
+
+		NodeType[] typeList2 = { NodeType.TRUE, NodeType.B, NodeType.OR};
+		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
+		assertEquals("return2 start", "(⊤∨B)", pltree2.toStringInfix());
+		assertEquals("returns2", true, pltree2.evaluateConstantSubtrees());
+
+		NodeType[] typeList3 = { NodeType.TRUE, NodeType.B, NodeType.OR, NodeType.C, NodeType.AND};
+		PLTreeNodeInterface pltree3 = PLTreeNode.reversePolishBuilder(typeList3);
+		assertEquals("return3 start", "((⊤∨B)∧C)", pltree3.toStringInfix());
+		assertEquals("returns3", null, pltree3.evaluateConstantSubtrees());
 	}
 	
 	@Test
