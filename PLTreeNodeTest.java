@@ -37,12 +37,28 @@ public class PLTreeNodeTest
 
 	/**
 	 * This is not a true JUnit Test method: it merely gives examples of calling the PLTree methods and obtaining output.
-	 * 
+	 *
 	 * As part of this exercise, you should devise your OWN tests to check that your code is performing as the JavaDoc and the assignment
 	 * hand-out says it should. You are strongly advised to use the "Coverage" tool to check for parts of your code that are not executed as
 	 * part of your tests. The coverage tool can be invoked from the "Run" menu item in Eclipse or from the button beside the "Run" and
 	 * "Debug" buttons in Eclipse
 	 */
+
+	@Test
+	public void testAlansCode()
+	{
+		NodeType[] typeList0 = { NodeType.A, NodeType.B };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList0);
+		assertEquals("shouldn't work", null, pltree);
+
+		NodeType[] typeList1 = { NodeType.A, NodeType.IMPLIES };
+		pltree = PLTreeNode.reversePolishBuilder(typeList1);
+		assertEquals("shouldn't work", null, pltree);
+
+		pltree = PLTreeNode.reversePolishBuilder(null);
+		assertEquals("shouldn't work", null, pltree);
+	}
+
 	@Test
 	public void testToStringInfix()
 	{
@@ -132,8 +148,8 @@ public class PLTreeNodeTest
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList0);
 		pltree.eliminateImplies();
 		assertEquals("Simple implies: ", "(¬A∨B)", pltree.toStringInfix());
-		
-		
+
+
 		NodeType[] typeList1 = { NodeType.A, NodeType.B, NodeType.IMPLIES, NodeType.C, NodeType.AND, NodeType.C, NodeType.IMPLIES, NodeType.C, NodeType.AND, NodeType.C, NodeType.AND };
 		pltree = PLTreeNode.reversePolishBuilder(typeList1);
 		pltree.eliminateImplies();
@@ -244,8 +260,8 @@ public class PLTreeNodeTest
 	@Test
 	public void testEvaluateConstantSubtreesNullChildren()
 	{
-		// if you can help me write a test for this that would be great
-		
+		// TODO: if you can help me write a test for this that would be great
+
 		/*
 		NodeType[] typeList = { NodeType.FALSE, NodeType.A, NodeType.AND };
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
@@ -279,30 +295,30 @@ public class PLTreeNodeTest
 		assertEquals("return3 start", "((⊤∨B)∧C)", pltree3.toStringInfix());
 		assertEquals("returns3", null, pltree3.evaluateConstantSubtrees());
 	}
-	
+
 	@Test
 	public void testEvaluateConstantSubtreesHard()
 	{
 		NodeType[] trueL = { NodeType.TRUE };
 		PLTreeNodeInterface trueT = PLTreeNode.reversePolishBuilder(trueL);
-		
+
 		NodeType[] falseL = { NodeType.FALSE };
 		PLTreeNodeInterface falseT = PLTreeNode.reversePolishBuilder(falseL);
-		
+
 		NodeType[] anyL = { NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES };
 		PLTreeNodeInterface anyT = PLTreeNode.reversePolishBuilder(anyL);
-		
+
 		//⊤⊤
 		NodeType[] typeList0a = { NodeType.TRUE, NodeType.TRUE, NodeType.AND };
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList0a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊤", pltree.toStringInfix());
-		
+
 		NodeType[] typeList0o = { NodeType.TRUE, NodeType.TRUE, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList0o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊤", pltree.toStringInfix());
-		
+
 		NodeType[] typeList0i = { NodeType.TRUE, NodeType.TRUE, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList0i);
 		pltree.evaluateConstantSubtrees();
@@ -313,12 +329,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList1a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊥", pltree.toStringInfix());
-		
+
 		NodeType[] typeList1o = { NodeType.TRUE, NodeType.FALSE, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList1o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊤", pltree.toStringInfix());
-		
+
 		NodeType[] typeList1i = { NodeType.TRUE, NodeType.FALSE, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList1i);
 		pltree.evaluateConstantSubtrees();
@@ -329,12 +345,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList2a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", anyT.toStringInfix(), pltree.toStringInfix());
-		
+
 		NodeType[] typeList2o = { NodeType.TRUE, NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList2o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊤", pltree.toStringInfix());
-		
+
 		NodeType[] typeList2i = { NodeType.TRUE, NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList2i);
 		pltree.evaluateConstantSubtrees();
@@ -345,12 +361,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList3a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊥", pltree.toStringInfix());
-		
+
 		NodeType[] typeList3o = { NodeType.FALSE, NodeType.TRUE, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList3o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊤", pltree.toStringInfix());
-		
+
 		NodeType[] typeList3i = { NodeType.FALSE, NodeType.TRUE, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList3i);
 		pltree.evaluateConstantSubtrees();
@@ -361,12 +377,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList4a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊥", pltree.toStringInfix());
-		
+
 		NodeType[] typeList4o = { NodeType.FALSE, NodeType.FALSE, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList4o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊥", pltree.toStringInfix());
-		
+
 		NodeType[] typeList4i = { NodeType.FALSE, NodeType.FALSE, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList4i);
 		pltree.evaluateConstantSubtrees();
@@ -377,12 +393,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList5a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊥", pltree.toStringInfix());
-		
+
 		NodeType[] typeList5o = { NodeType.FALSE, NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList5o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", anyT.toStringInfix(), pltree.toStringInfix());
-		
+
 		NodeType[] typeList5i = { NodeType.FALSE, NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList5i);
 		pltree.evaluateConstantSubtrees();
@@ -393,12 +409,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList6a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", anyT.toStringInfix(), pltree.toStringInfix());
-		
+
 		NodeType[] typeList6o = { NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.TRUE, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList6o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊤", pltree.toStringInfix());
-		
+
 		NodeType[] typeList6i = { NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.TRUE, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList6i);
 		pltree.evaluateConstantSubtrees();
@@ -409,12 +425,12 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList7a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "⊥", pltree.toStringInfix());
-		
+
 		NodeType[] typeList7o = { NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.FALSE, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList7o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", anyT.toStringInfix(), pltree.toStringInfix());
-		
+
 		NodeType[] typeList7i = { NodeType.X, NodeType.Y, NodeType.Z, NodeType.OR, NodeType.OR, NodeType.W, NodeType.IMPLIES, NodeType.FALSE, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList7i);
 		pltree.evaluateConstantSubtrees();
@@ -425,19 +441,19 @@ public class PLTreeNodeTest
 		pltree = PLTreeNode.reversePolishBuilder(typeList8a);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "(A∧A)", pltree.toStringInfix());
-		
+
 		NodeType[] typeList8o = { NodeType.A, NodeType.A, NodeType.OR };
 		pltree = PLTreeNode.reversePolishBuilder(typeList8o);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "(A∨A)", pltree.toStringInfix());
-		
+
 		NodeType[] typeList8i = { NodeType.A, NodeType.A, NodeType.IMPLIES };
 		pltree = PLTreeNode.reversePolishBuilder(typeList8i);
 		pltree.evaluateConstantSubtrees();
 		assertEquals("Refer to table: ", "(A→A)", pltree.toStringInfix());
-		
+
 	}
-	
+
 	@Test
 	public void testPushOrBelowAnd()
 	{
@@ -446,7 +462,7 @@ public class PLTreeNodeTest
 		assertEquals("AND LHS", "((P∧Q)∨R)", pltree.toStringInfix());
 		pltree.pushOrBelowAnd();
 		assertEquals("AND LHS", "((P∨R)∧(Q∨R))", pltree.toStringInfix());
-		
+
 		NodeType[] typeList2 = { NodeType.P, NodeType.Q, NodeType.R, NodeType.AND, NodeType.OR};
 		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
 		assertEquals("AND RHS", "(P∨(Q∧R))", pltree2.toStringInfix());
@@ -471,8 +487,8 @@ public class PLTreeNodeTest
 		assertEquals("Constructed: " ,"((X∨Y)∨Z)",pltree1.toStringInfix());
 		pltree1.makeAndOrRightDeep();
 		assertEquals("Made : " ,"(X∨(Y∨Z))",pltree1.toStringInfix());
-		
-		
+
+
 		NodeType[] typeList2 = new NodeType[] { NodeType.X, NodeType.Y, NodeType.AND, NodeType.Z, NodeType.AND};
 		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
 		assertEquals("Constructed: " ,"((X∧Y)∧Z)",pltree2.toStringInfix());
@@ -501,7 +517,7 @@ public class PLTreeNodeTest
 		pltree.pushOrBelowAnd();
 
 	}
-	
+
 
 	@Test
 	public void woooEverythingWorks()
@@ -556,7 +572,7 @@ public class PLTreeNodeTest
 		NodeType[] typeList2 = { NodeType.FALSE, NodeType.NOT, NodeType.TRUE, NodeType.Q, NodeType.NOT, NodeType.AND, NodeType.OR,
 				NodeType.TRUE, NodeType.NOT, NodeType.TRUE, NodeType.Q, NodeType.NOT, NodeType.AND, NodeType.OR, NodeType.AND };
 		pltree = PLTreeNode.reversePolishBuilder(typeList2);
-		
+
 		pltree.makeAndOrRightDeep();
 		assertEquals("makeAndOrRightDeep: ", "and(or(not(false),and(true,not(Q))),or(not(true),and(true,not(Q))))",
 				pltree.toStringPrefix());
@@ -617,12 +633,12 @@ public class PLTreeNodeTest
 
 		//===========================
 	}
-	
+
 
 	@Test
 	public void extraTestsForPushOrBelowAnd()
 	{
-		
+
 		//"Extra tests of pushOrBelowAnd()"
 		NodeType[] typeList = new NodeType[] { NodeType.A, NodeType.B, NodeType.AND, NodeType.C, NodeType.AND, NodeType.D, NodeType.OR, NodeType.E, NodeType.OR};
 		assertEquals("typeList: " , "[A, B, AND, C, AND, D, OR, E, OR]",Arrays.toString(typeList));
@@ -631,18 +647,18 @@ public class PLTreeNodeTest
 		assertEquals("Constructed: " ,"((((A∧B)∧C)∨D)∨E)",pltree.toStringInfix());
 		NodeType[] typeListReturned = pltree.getReversePolish();
 		assertEquals("typeListReturned: " ,"[A, B, AND, C, AND, D, OR, E, OR]",Arrays.toString(typeListReturned));
-		
+
 		pltree.pushOrBelowAnd();
 		//assertEquals("pushOrBelowAnd: ", "", pltree.toStringPrefix());
 		assertEquals("pushOrBelowAnd: ", "((((A∨D)∨E)∧((B∨D)∨E))∧((C∨D)∨E))", pltree.toStringInfix());
 		typeListReturned = pltree.getReversePolish();
 		assertEquals("typeListReturned: " ,"[A, D, OR, E, OR, B, D, OR, E, OR, AND, C, D, OR, E, OR, AND]",Arrays.toString(typeListReturned));
-		
+
 		pltree.makeAndOrRightDeep();
 		assertEquals("makeAndOrRightDeep: ", "((A∨(D∨E))∧((B∨(D∨E))∧(C∨(D∨E))))", pltree.toStringInfix());
 		typeListReturned = pltree.getReversePolish();
 		assertEquals("typeListReturned: " ,"[A, D, E, OR, OR, B, D, E, OR, OR, C, D, E, OR, OR, AND, AND]",Arrays.toString(typeListReturned));
-		
+
 	}
 
 
@@ -818,3 +834,8 @@ public class PLTreeNodeTest
 	*/
 
 }
+
+
+
+
+
