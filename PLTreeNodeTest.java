@@ -441,11 +441,17 @@ public class PLTreeNodeTest
 	@Test
 	public void testPushOrBelowAnd()
 	{
-		NodeType[] typeList = { NodeType.A, NodeType.B, NodeType.OR, NodeType.NOT };
+		NodeType[] typeList = { NodeType.P, NodeType.Q, NodeType.AND, NodeType.R, NodeType.OR };
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
-		assertEquals("NOT over OR start", "¬(A∨B)", pltree.toStringInfix());
-		pltree.pushNotDown();
-		assertEquals("NOT over OR", "(¬A∧¬B)", pltree.toStringInfix());
+		assertEquals("AND LHS", "((P∧Q)∨R)", pltree.toStringInfix());
+		pltree.pushOrBelowAnd();
+		assertEquals("AND LHS", "((P∨R)∧(Q∨R))", pltree.toStringInfix());
+		
+		NodeType[] typeList2 = { NodeType.P, NodeType.Q, NodeType.R, NodeType.AND, NodeType.OR};
+		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
+		assertEquals("AND RHS", "(P∨(Q∧R))", pltree2.toStringInfix());
+		pltree2.pushOrBelowAnd();
+		assertEquals("AND RHS", "((P∨Q)∧(P∨R))", pltree2.toStringInfix());
 
 		NodeType[] typeList5 = { NodeType.FALSE, NodeType.NOT, NodeType.TRUE, NodeType.NOT, NodeType.AND, NodeType.TRUE, NodeType.Q,
 				NodeType.NOT, NodeType.AND, NodeType.OR };
